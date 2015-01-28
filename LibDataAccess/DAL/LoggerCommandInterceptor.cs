@@ -87,7 +87,7 @@ namespace LibDataAccess.DAL
         {
             if (command.Transaction != null)
             {
-                logger.DebugFormat("Execute command: \r\n{0} \r\nParameters: \r\n{1} \r\nTransactionId: {2}, level: {3}",
+                logger.DebugFormat("Execute command: \r\n{0}, Parameters: \r\n{1} \r\nTransactionId: {2}, level: {3}",
                                   command.CommandText,
                                   TranslateParamsToString(command.Parameters),
                                   command.Transaction.GetHashCode(),
@@ -95,7 +95,7 @@ namespace LibDataAccess.DAL
             }
             else
             {
-                logger.DebugFormat("Execute command: \r\n{0} \r\nParameters: \r\n{1} \r\n",
+                logger.DebugFormat("Execute command: \r\n{0}, Parameters: \r\n{1}",
                                       command.CommandText,
                                       TranslateParamsToString(command.Parameters));
             }
@@ -113,7 +113,7 @@ namespace LibDataAccess.DAL
             {
                 if (command.Transaction != null)
                 {
-                    logger.ErrorFormat("Command: \r\n{0} \r\nParameters: \r\n{1} \r\ngot exception: \r\n{2} \r\nTransactionId: {3}",
+                    logger.ErrorFormat("Command: \r\n{0}, Parameters: \r\n{1} \r\ngot exception: \r\n{2} \r\nTransactionId: {3}",
                                        command.CommandText,
                                        TranslateParamsToString(command.Parameters),
                                        interceptionContext.Exception,
@@ -121,7 +121,7 @@ namespace LibDataAccess.DAL
                 }
                 else
                 {
-                    logger.ErrorFormat("Command: \r\n{0} \r\nParameters: \r\n{1} \r\ngot exception: \r\n{2}",
+                    logger.ErrorFormat("Command: \r\n{0}, Parameters: \r\n{1} \r\ngot exception: \r\n{2}",
                                            command.CommandText,
                                            TranslateParamsToString(command.Parameters),
                                            interceptionContext.Exception);
