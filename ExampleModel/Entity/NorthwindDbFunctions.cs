@@ -6,7 +6,7 @@ using System.Data.Entity;
 
 namespace ExampleModel.Entity
 {
-    public class ETSDbFunctions
+    public class NorthwindDbFunctions
     {
         [DbFunction("NorthwindModel.Store", "fn_retEmployeeName")]
         public static string fn_retEmployeeName(int employeeId)

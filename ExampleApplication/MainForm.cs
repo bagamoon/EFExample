@@ -634,7 +634,7 @@ namespace ExampleApplicationCSharp
             {
                 //呼叫純量值函數
                 var query = (from emp in uof.Repository<Employees>().GetAll()
-                             where ETSDbFunctions.fn_retEmployeeName(emp.EmployeeID) == "Leverling Janet"
+                             where NorthwindDbFunctions.fn_retEmployeeName(emp.EmployeeID) == "Leverling Janet"
                              select new
                              {
                                  EmployeeId = emp.EmployeeID,
