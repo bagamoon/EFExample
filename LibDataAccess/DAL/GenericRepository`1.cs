@@ -10,6 +10,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure.Interception;
 using EntityFramework.BulkInsert.Extensions;
+using System.Data.Entity.Core.Metadata.Edm;
 
 namespace LibDataAccess.DAL
 {
@@ -20,6 +21,13 @@ namespace LibDataAccess.DAL
     public class GenericRepository<TEntity>
         where TEntity : class
     {
+        private static object _lock = new object();
+
+        /// <summary>
+        /// EntityName與EntitySetName的對應Dict
+        /// </summary>
+        private Dictionary<string, string> _entitySetNameDict = new Dictionary<string, string>();
+
         /// <summary>
         /// DbContext物件
         /// </summary>
@@ -313,11 +321,40 @@ namespace LibDataAccess.DAL
         /// <returns>PK值的集合</returns>
         protected object[] GetEntityKeyValue(TEntity item)
         {
-            var key = ObjContext.CreateEntityKey(typeof(TEntity).Name, item);
+            string entitySetName = GetEntitySetName(typeof(TEntity).Name);
+
+            var key = ObjContext.CreateEntityKey(entitySetName, item);
 
             object[] keyValue = key.EntityKeyValues.Select(p => p.Value).ToArray();
 
             return keyValue;
+        }
+
+        /// <summary>
+        /// 以EntityName取得EntitySet Name
+        /// </summary>
+        /// <param name="entityName"></param>
+        /// <returns></returns>
+        private string GetEntitySetName(string entityName)
+        {
+            string entitySetName = "";
+            if (_entitySetNameDict.TryGetValue(entityName, out entitySetName) == false)
+            {
+                lock (_lock)
+                {
+                    var container = ObjContext.MetadataWorkspace.GetEntityContainer(ObjContext.DefaultContainerName, DataSpace.CSpace);
+                    entitySetName = (from meta in container.BaseEntitySets
+                                     where meta.ElementType.Name == entityName
+                                     select meta.Name).First();
+
+                    if (_entitySetNameDict.ContainsKey(entityName) == false)
+                    {
+                        _entitySetNameDict.Add(entityName, entitySetName);
+                    }
+                }
+            }
+
+            return entitySetName;
         }
     }
 }
