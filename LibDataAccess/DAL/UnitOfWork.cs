@@ -108,6 +108,13 @@ namespace LibDataAccess.DAL
         }
 
         /// <summary>
+        /// 取得資料庫現在日期時間, 僅限MSSQL
+        /// </summary>
+        /// <returns>現在日期時間</returns>
+        public DateTime GetSQLDateTime()
+        {
+            return SqlQuery<DateTime>("select getdate()").First();
+        }
         /// 開始Transaction
         /// </summary>
         /// <param name="isolationLevel">transaction層級, 預設為Unspecified</param>

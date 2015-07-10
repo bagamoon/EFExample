@@ -8,6 +8,12 @@ namespace LibDataAccess.Extension
 {
     public static class DbEntityValidationExceptionExtension
     {
+        /// <summary>
+        /// 將攔截到的DbEntityValidationException輸出為容易閱讀的格式
+        /// 包含Entity, 屬性, 欲更新的值及錯誤訊息
+        /// </summary>
+        /// <param name="ex">DbEntityValidationException</param>
+        /// <returns>發生錯誤的Entity, 屬性, 欲更新的值及錯誤訊息</returns>
         public static string ToTraceString(this DbEntityValidationException ex)
         {
             var exceptions = ex.EntityValidationErrors.Select(e => new
